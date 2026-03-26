@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测测你是原神中的哪个角色</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 30px 20px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #ffd700, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            text-align: center;
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .question {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            border-left: 3px solid #4ecdc4;
+        }
+        .question-number {
+            color: #4ecdc4;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+        .question-text {
+            font-size: 15px;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        .options label {
+            display: block;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        .options label:hover {
+            background: rgba(78, 205, 196, 0.2);
+        }
+        .options input[type="radio"] {
+            margin-right: 10px;
+            accent-color: #4ecdc4;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+        .submit-btn:hover {
+            transform: scale(1.02);
+        }
+        .result {
+            display: none;
+            text-align: center;
+            padding: 30px 20px;
+        }
+        .result.show {
+            display: block;
+        }
+        .result-title {
+            font-size: 18px;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+        .character-name {
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(90deg, #ffd700, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+        .character-desc {
+            color: #ccc;
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        .character-tag {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(78, 205, 196, 0.3);
+            border-radius: 20px;
+            font-size: 12px;
+            margin: 5px;
+        }
+        .restart-btn {
+            padding: 12px 30px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .share-tip {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255,215,0,0.1);
+            border-radius: 10px;
+            font-size: 13px;
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="quiz">
+            <h1>✨ 测测你是原神中的哪个角色 ✨</h1>
+            <p class="subtitle">回答20道题，找到最像你的提瓦特伙伴</p>
+            
+            <form id="quizForm">
+                <!-- 题目1 -->
+                <div class="question">
+                    <div class="question-number">QUESTION 01</div>
+                    <div class="question-text">周末到了，你更倾向于怎么度过？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q1" value="A"> 去户外冒险，探索未知的地方</label>
+                        <label><input type="radio" name="q1" value="B"> 在家看书或学习新技能</label>
+                        <label><input type="radio" name="q1" value="C"> 和朋友聚会，享受美食</label>
+                        <label><input type="radio" name="q1" value="D"> 独自思考，规划未来</label>
+                    </div>
+                </div>
+
+                <!-- 题目2 -->
+                <div class="question">
+                    <div class="question-number">QUESTION 02</div>
+                    <div class="question-text">面对困难时，你的第一反应是？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q2" value="A"> 直接冲上去解决</label>
+                        <label><input type="radio" name="q2" value="B"> 冷静分析，制定策略</label>
+                        <label><input type="radio" name="q2" value="C"> 寻求他人帮助</label>
+                        <label><input type="radio" name="q2" value="D"> 先观察，等待时机</label>
+                    </div>
+                </div>
+
+                <!-- 题目3 -->
+                <div class="question">
+                    <div class="question-number">QUESTION 03</div>
+                    <div class="question-text">你最喜欢的天气是？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q3" value="A"> 晴朗的阳光天</label>
+                        <label><input type="radio" name="q3" value="B"> 微风轻拂的多云天</label>
+                        <label><input type="radio" name="q3" value="C"> 细雨绵绵的阴天</label>
+                        <label><input type="radio" name="q3" value="D"> 雷电交加的风雨天</label>
+                    </div>
+                </div>
+
+                <!-- 题目4 -->
+                <div class="question">
+                    <div class="question-number">QUESTION 04</div>
+                    <div class="question-text">在团队中，你通常扮演什么角色？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q4" value="A"> 冲锋陷阵的先锋</label>
+                        <label><input type="radio" name="q4" value="B"> 出谋划策的智囊</label>
+                        <label><input type="radio" name="q4" value="C"> 照顾大家的后盾</label>
+                        <label><input type="radio" name="q4" value="D"> 默默付出的执行者</label>
+                    </div>
+                </div>
+
+                <!-- 题目5 -->
+                <div class="question">
+                    <div class="question-number">QUESTION 05</div>
+                    <div class="question-text">你更重视以下哪种品质？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q5" value="A"> 勇气与正义</label>
+                        <label><input type="radio" name="q5" value="B"> 智慧与知识</label>
+                        <label><input type="radio" name="q5" value="C"> 自由与随性</label>
+                        <label><input type="radio" name="q5" value="D"> 责任与守护</label>
+                    </div>
+                </div>
+
+                <!-- 题目6 -->
+                <div class="question">
+                    <div class="question-number">QUESTION 06</div>
+                    <div class="question-text">如果可以选择一种元素力量，你会选？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q6" value="A"> 风 - 自由不羁，无拘无束</label>
+                        <label><input type="radio" name="q6" value="B"> 岩 - 稳重坚定，守护一切</label>
+                        <label><input type="radio" name="q6" value="C"> 雷 - 果断凌厉，雷厉风行</label>
+                        <label><input type="radio" name="q6" value="D"> 草 - 生生不息，智慧成长</label>
+                    </div>
+                </div>
+
+                <!-- 题目7 -->
+                <div class="question">
+                    <div class="question-number">QUESTION 07</div>
+                    <div class="question-text">朋友遇到困难找你倾诉，你会？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q7" value="A"> 带他去散心，用行动支持</label>
+                        <label><input type="radio" name="q7" value="B"> 帮他分析问题，给建议</label>
+                        <label><input type="radio" name="q7" value="C"> 静静陪伴，倾听就好</label>
+                        <label><input type="radio" name="q7" value="D"> 直接帮他解决麻烦</label>
+                    </div>
+                </div>
+
+                <!-- 题目8 -->
+                <div class="question">
+                    <div class="question-number">QUESTION 08</div>
+                    <div class="question-text">你理想的居住地是？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q8" value="A"> 自由的风之城邦</label>
+                        <label><input type="radio" name="q8" value="B"> 繁华的契约之都</label>
+                        <label><input type="radio" name="q8" value="C"> 永恒的雷电之国</label>
+                        <label><input type="radio" name="q8" value="D"> 智慧的森林国度</label>
+                    </div>
+                </div>
+
+                <!-- 题目9 -->
+                <div class="question">
+                    <div class="question-number">QUESTION 09</div>
+                    <div class="question-text">你的口头禅更可能是？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q9" value="A"> "交给我吧！"</label>
+                        <label><input type="radio" name="q9" value="B"> "让我想想..."</label>
+                        <label><input type="radio" name="q9" value="C"> "哈哈哈，真有趣~"</label>
+                        <label><input type="radio" name="q9" value="D"> "没问题，包在我身上"</label>
+                    </div>
+                </div>
+
+                <!-- 题目10 -->
+                <div class="question">
+                    <div class="question-number">QUESTION 10</div>
+                    <div class="question-text">面对规则，你的态度是？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q10" value="A"> 规则是用来打破的</label>
+                        <label><input type="radio" name="q10" value="B"> 理解规则背后的逻辑</label>
+                        <label><input type="radio" name="q10" value="C"> 在规则内寻找自由</label>
+                        <label><input type="radio" name="q10" value="D"> 遵守规则，维护秩序</label>
+                    </div>
+                </div>
+
+                <!-- 题目11 -->
+                <div class="question">
+                    <div class="question-number">QUESTION 11</div>
+                    <div class="question-text">你最喜欢的食物类型是？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q11" value="A"> 肉类大餐，充满能量</label>
+                        <label><input type="radio" name="q11" value="B"> 精致甜点，优雅享受</label>
+                        <label><input type="radio" name="q11" value="C"> 清爽蔬果，健康自然</label>
+                        <label><input type="radio" name="q11" value="D"> 美酒佳肴，品味人生</label>
+                    </div>
+                </div>
+
+                <!-- 题目12 -->
+                <div class="question">
+                    <div class="question-number">QUESTION 12</div>
+                    <div class="question-text">你更害怕失去什么？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q12" value="A"> 失去自由</label>
+                        <label><input type="radio" name="q12" value="B"> 失去重要的人</label>
+                        <label><input type="radio" name="q12" value="C"> 失去记忆</label>
+                        <label><input type="radio" name="q12" value="D"> 失去信念</label>
+                    </div>
+                </div>
+
+                <!-- 题目13 -->
+                <div class="question">
+                    <div class="question-number">QUESTION 13</div>
+                    <div class="question-text">你的穿衣风格偏向？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q13" value="A"> 实用舒适，便于行动</label>
+                        <label><input type="radio" name="q13" value="B"> 优雅得体，注重细节</label>
+                        <label><input type="radio" name="q13" value="C"> 个性独特，与众不同</label>
+                        <label><input type="radio" name="q13" value="D"> 传统经典，庄重大方</label>
+                    </div>
+                </div>
+
+                <!-- 题目14 -->
+                <div class="question">
+                    <div class="question-number">QUESTION 14</div>
+                    <div class="question-text">遇到陌生人，你会？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q14" value="A"> 主动搭话，很快熟络</label>
+                        <label><input type="radio" name="q14" value="B"> 礼貌问候，保持距离</label>
+                        <label><input type="radio" name="q14" value="C"> 观察对方，再决定是否交流</label>
+                        <label><input type="radio" name="q14" value="D"> 等待对方先开口</label>
+                    </div>
+                </div>
+
+                <!-- 题目15 -->
+                <div class="question">
+                    <div class="question-number">QUESTION 15</div>
+                    <div class="question-text">你如何看待过去？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q15" value="A"> 过去造就了现在的我</label>
+                        <label><input type="radio" name="q15" value="B"> 从过去学习，面向未来</label>
+                        <label><input type="radio" name="q15" value="C"> 过去已成云烟，活在当下</label>
+                        <label><input type="radio" name="q15" value="D"> 背负过去，继续前行</label>
+                    </div>
+                </div>
+
+                <!-- 题目16 -->
+                <div class="question">
+                    <div class="question-number">QUESTION 16</div>
+                    <div class="question-text">你的缺点更可能是？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q16" value="A"> 太过冲动，考虑不周</label>
+                        <label><input type="radio" name="q16" value="B"> 想太多，优柔寡断</label>
+                        <label><input type="radio" name="q16" value="C"> 过于随性，不够认真</label>
+                        <label><input type="radio" name="q16" value="D"> 太过执着，不懂变通</label>
+                    </div>
+                </div>
+
+                <!-- 题目17 -->
+                <div class="question">
+                    <div class="question-number">QUESTION 17</div>
+                    <div class="question-text">如果有一笔意外之财，你会？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q17" value="A"> 去旅行冒险，开阔眼界</label>
+                        <label><input type="radio" name="q17" value="B"> 投资学习，提升自己</label>
+                        <label><input type="radio" name="q17" value="C"> 请朋友吃饭，分享快乐</label>
+                        <label><input type="radio" name="q17" value="D"> 存起来，以备不时之需</label>
+                    </div>
+                </div>
+
+                <!-- 题目18 -->
+                <div class="question">
+                    <div class="question-number">QUESTION 18</div>
+                    <div class="question-text">你更认同哪种人生哲学？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q18" value="A"> 人生在于体验，要活得精彩</label>
+                        <label><input type="radio" name="q18" value="B"> 知识就是力量，要不断学习</label>
+                        <label><input type="radio" name="q18" value="C"> 顺其自然，随遇而安</label>
+                        <label><input type="radio" name="q18" value="D"> 有所为有所不为，坚守底线</label>
+                    </div>
+                </div>
+
+                <!-- 题目19 -->
+                <div class="question">
+                    <div class="question-number">QUESTION 19</div>
+                    <div class="question-text">描述你最好的一个词是？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q19" value="A"> 热情</label>
+                        <label><input type="radio" name="q19" value="B"> 聪慧</label>
+                        <label><input type="radio" name="q19" value="C"> 洒脱</label>
+                        <label><input type="radio" name="q19" value="D"> 可靠</label>
+                    </div>
+                </div>
+
+                <!-- 题目20 -->
+                <div class="question">
+                    <div class="question-number">QUESTION 20</div>
+                    <div class="question-text">如果必须在以下身份中选择，你会是？</div>
+                    <div class="options">
+                        <label><input type="radio" name="q20" value="A"> 四处旅行的吟游诗人</label>
+                        <label><input type="radio" name="q20" value="B"> 隐居深山的学者</label>
+                        <label><input type="radio" name="q20" value="C"> 浪迹天涯的浪人</label>
+                        <label><input type="radio" name="q20" value="D"> 守护家园的骑士</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">查看测试结果 ✨</button>
+            </form>
+        </div>
+
+        <div id="result" class="result">
+            <div class="result-title">你的测试结果</div>
+            <div class="character-name" id="characterName"></div>
+            <div id="characterTags"></div>
+            <div class="character-desc" id="characterDesc"></div>
+            <button class="restart-btn" onclick="restartQuiz()">再测一次</button>
+            <div class="share-tip">
+                💡 截图分享给朋友，看看他们是谁！
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const characters = {
+            'A': {
+                name: '旅行者（空/荧）',
+                tags: ['冒险', '勇敢', '自由'],
+                desc: '你像旅行者一样充满好奇心和冒险精神！你渴望探索未知，不愿被束缚。无论遇到什么困难，你都能保持乐观，相信前方有更好的风景。你的勇气和行动力会感染身边的人，是团队中不可或缺的先锋。'
+            },
+            'B': {
+                name: '钟离',
+                tags: ['智慧', '沉稳', '守护'],
+                desc: '你像钟离一样沉稳睿智！你善于思考，做事有条不紊，是朋友们信赖的智囊。你重视承诺和责任，愿意默默守护重要的人和事。虽然有时显得过于严肃，但你的可靠让所有人都感到安心。'
+            },
+            'C': {
+                name: '温迪',
+                tags: ['自由', '随性', '诗人'],
+                desc: '你像温迪一样热爱自由！你随性洒脱，不喜欢被规则束缚，总能用乐观的态度面对生活。你善于发现生活中的美好，是朋友们的开心果。虽然看起来不太正经，但关键时刻你比谁都可靠。'
+            },
+            'D': {
+                name: '雷电将军',
+                tags: ['果断', '执着', '强大'],
+                desc: '你像雷电将军一样雷厉风行！你目标明确，执行力强，一旦决定的事情就会坚持到底。你对自己要求很高，也希望能保护重要的人。虽然有时显得过于严厉，但你的强大和担当令人敬佩。'
+            },
+            'E': {
+                name: '纳西妲',
+                tags: ['智慧', '温柔', '好奇'],
+                desc: '你像纳西妲一样充满智慧！你对世界充满好奇，喜欢学习和探索新知识。你温柔善良，总是设身处地为他人着想。虽然外表柔弱，但你内心坚强，愿意为了守护重要的事物而成长。'
+            },
+            'F': {
+                name: '达达利亚',
+                tags: ['热情', '好战', '直率'],
+                desc: '你像达达利亚一样热情直率！你喜欢挑战，享受战斗的快感，从不畏惧强大的对手。你对家人和朋友极其重视，愿意为他们付出一切。虽然有时显得过于好斗，但你的真诚和热血令人动容。'
+            },
+            'G': {
+                name: '甘雨',
+                tags: ['勤奋', '温柔', '负责'],
+                desc: '你像甘雨一样勤奋负责！你做事认真，追求完美，是团队中默默付出的中坚力量。你温柔体贴，总是照顾他人的感受。虽然有时过于辛苦自己，但你的努力和坚持终将得到回报。'
+            },
+            'H': {
+                name: '胡桃',
+                tags: ['活泼', '独特', '豁达'],
+                desc: '你像胡桃一样古灵精怪！你思维独特，不拘一格，总能给人带来惊喜。你豁达开朗，对生死看得很淡，更重视活在当下。虽然有时让人捉摸不透，但你的真诚和有趣让所有人都喜欢你。'
+            },
+            'I': {
+                name: '神里绫华',
+                tags: ['优雅', '坚韧', '温柔'],
+                desc: '你像神里绫华一样优雅坚韧！你出身或环境可能给你带来了一些束缚，但你从未放弃追求自己的梦想。你温柔体贴，却也有坚定的意志。你的优雅不是矫揉造作，而是历经磨练后的从容。'
+            },
+            'J': {
+                name: '枫原万叶',
+                tags: ['洒脱', '通透', '流浪'],
+                desc: '你像万叶一样洒脱通透！你经历过风雨，所以更懂得珍惜当下。你不喜欢被束缚，更愿意随风而行，去想去的地方。虽然看似漂泊无依，但你的内心早已找到了归属。你的豁达和智慧令人钦佩。'
+            }
+        };
+
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const answers = {};
+            let answered = 0;
+            
+            for (let i = 1; i <= 20; i++) {
+                const answer = formData.get('q' + i);
+                if (answer) {
+                    answers[answer] = (answers[answer] || 0) + 1;
+                    answered++;
+                }
+            }
+            
+            if (answered < 20) {
+                alert('请回答所有题目后再提交哦~');
+                return;
+            }
+            
+            // 计算结果
+            let maxCount = 0;
+            let resultKey = 'A';
+            const scoreMap = {'A': 0, 'B': 0, 'C': 0, 'D': 0};
+            
+            for (let key in answers) {
+                scoreMap[key] = answers[key];
+                if (answers[key] > maxCount) {
+                    maxCount = answers[key];
+                    resultKey = key;
+                }
+            }
+            
+            // 根据分数分布映射到10个角色
+            const charMap = {
+                'A': 'A', // 旅行者
+                'B': 'B', // 钟离
+                'C': 'C', // 温迪
+                'D': 'D'  // 雷电将军
+            };
+            
+            // 根据ABCD的分布细化到10个角色
+            let finalChar = charMap[resultKey];
+            const total = scoreMap.A + scoreMap.B + scoreMap.C + scoreMap.D;
+            
+            if (resultKey === 'A') {
+                finalChar = scoreMap.C > scoreMap.B ? 'F' : 'A'; // 达达利亚或旅行者
+            } else if (resultKey === 'B') {
+                finalChar = scoreMap.D > scoreMap.A ? 'B' : 'E'; // 钟离或纳西妲
+            } else if (resultKey === 'C') {
+                finalChar = scoreMap.A > scoreMap.D ? 'C' : 'H'; // 温迪或胡桃
+            } else if (resultKey === 'D') {
+                finalChar = scoreMap.B > scoreMap.C ? 'D' : (scoreMap.A > scoreMap.C ? 'I' : 'J'); // 雷电将军、绫华或万叶
+            }
+            
+            // 确保映射到正确范围
+            const charKeys = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+            if (!charKeys.includes(finalChar)) {
+                finalChar = resultKey;
+            }
+            
+            // 特殊逻辑调整
+            if (scoreMap.B >= 6 && scoreMap.D >= 4) finalChar = 'G'; // 甘雨
+            if (scoreMap.C >= 7 && scoreMap.A >= 5) finalChar = 'J'; // 万叶
+            if (scoreMap.B >= 7 && scoreMap.C <= 3) finalChar = 'E'; // 纳西妲
+            if (scoreMap.D >= 6 && scoreMap.A >= 5) finalChar = 'I'; // 绫华
+            if (scoreMap.A >= 7 && scoreMap.B <= 4) finalChar = 'F'; // 达达利亚
+            if (scoreMap.C >= 6 && scoreMap.D >= 5) finalChar = 'H'; // 胡桃
+            
+            const char = characters[finalChar];
+            
+            document.getElementById('characterName').textContent = char.name;
+            document.getElementById('characterDesc').textContent = char.desc;
+            
+            const tagsHtml = char.tags.map(tag => `<span class="character-tag">${tag}</span>`).join('');
+            document.getElementById('characterTags').innerHTML = tagsHtml;
+            
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('result').classList.add('show');
+        });
+
+        function restartQuiz() {
+            document.getElementById('quizForm').reset();
+            document.getElementById('quiz').style.display = 'block';
+            document.getElementById('result').classList.remove('show');
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
